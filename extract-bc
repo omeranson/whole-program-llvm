@@ -189,7 +189,11 @@ def handleArchive(inputFile, outputFile, arCmd, fileType, extractor, llvmArchive
                if FileType.getFileType(fPath) == fileType:
 
                    # Extract bitcode locations from object
-                   contents = extractor(fPath)
+                   try:
+                       contents = extractor(fPath)
+                   except Exception:
+                       logging.exception("Failed to extract from {0}".format(fPath))
+                       continue
 
                    for bcFile in contents:
                        if bcFile != '':
